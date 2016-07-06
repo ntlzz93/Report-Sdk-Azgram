@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+        /* Helper Function */
+        function getDateTime() {
+            var date = new Date();
+
+            var year = date.getFullYear();
+
+            var month = date.getMonth() + 1;
+            month = (month < 10 ? "0" : "") + month;
+
+            var day = date.getDate();
+            day = (day < 10 ? "0" : "") + day;
+
+            return year + "-" + month + "-" + day;
+        }
+        ;
+
+//        function getTimeStand() {
+//            var date = new Date();
+//
+//            var hour = date.getHours();
+//            hour = (hour < 10 ? "0" : "") + hour;
+//
+//            var min = date.getMinutes();
+//            min = (min < 10 ? "0" : "") + min;
+//
+//            var sec = date.getSeconds();
+//            sec = (sec < 10 ? "0" : "") + sec;
+//
+//            var year = date.getFullYear();
+//
+//            var month = date.getMonth() + 1;
+//            month = (month < 10 ? "0" : "") + month;
+//
+//            var day = date.getDate();
+//            day = (day < 10 ? "0" : "") + day;
+//
+//            return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+//        }
+//        ;
+        /* End Helper Function */
+
+        /* Socket.io-client Function */
+
+        function reportSignUp(socket, date) {
+//            socket.emit('report signup', date);
+//            socket.on('users signup', function (data) {
+//                console.log('user register', data);
+//                _userRegister = data;
+//                initChart();
+//            });
+        }
+        ;
+
+        function reportActive(socket, lastVisitDate) {
+//            socket.emit('report active', lastVisitDate);
+//            socket.on('report active', function (users) {
+//                console.log('user active', users);
+//                _userActive = users;
+//                initChart();
+//            });
+        }
+        ;
+
+        function reportMessage(socket, date) {
+//            socket.emit('report message', date);
+//            socket.on('report message', function (messageObj) {
+//                if (messageObj.messageSent == null) {
+//                    var messageSent = 0;
+//                } else {
+//                    var messageSent = messageObj.messageSent;
+//                }
+//
+//                if (messageObj.messageDelivered == null) {
+//                    var messageDelivered = 0;
+//                } else {
+//                    var messageDelivered = messageObj.messageDelivered;
+//                }
+//                _messageSent = messageSent;
+//                _messageDelivered = messageDelivered;
+//                console.log('message sent', messageSent);
+//                console.log('message deliver', messageDelivered);
+//                initChart();
+//            });
+        }
+        ;
+
+        function reportCall(socket, date) {
+//            socket.emit('report call', date);
+//            socket.on('report call', function (callObj) {
+//                var callFree = callObj.callFree;
+//                var callOut = callObj.callOut;
+//
+//                console.log('call Free', callFree);
+//                console.log('call Out', callOut);
+//                _callFree = callFree;
+//                _callOut = callOut;
+//                initChart();
+//            });
+        }
+        ;
+
+        /* End Socket.io-client Function */
+
+        $(function () {
+
+            //////////////////////////
+            var _userRegister;
+            var _userActive;
+            var _messageSent;
+            var _messageDelivered;
+            var _callFree;
+            var _callOut;
+
+            /////////////////////////
+            var socket = io();
+
+            var date = getDateTime();
+
+//            reportSignUp(socket, date);
+
+//            var lastVisitDate = getTimeStand();
+
+//            reportActive(socket, lastVisitDate);
+//
+//            reportMessage(socket, date);
+//
+//            reportCall(socket, date);
+
+            socket.emit('report signup', date);
+            socket.on('users signup', function (data) {
+                console.log('user register', data);
+                _userRegister = data;
+                initChart();
+            });
+
+            socket.emit('report active', date);
+            socket.on('report active', function (users) {
+                console.log('user active', users);
+                _userActive = users;
+                initChart();
+            });
+
+            socket.emit('report message', date);
+            socket.on('report message', function (messageObj) {
+                if (messageObj.messageSent == null) {
+                    var messageSent = 0;
+                } else {
+                    var messageSent = messageObj.messageSent;
+                }
+
+                if (messageObj.messageDelivered == null) {
+                    var messageDelivered = 0;
+                } else {
+                    var messageDelivered = messageObj.messageDelivered;
+                }
+                _messageSent = messageSent;
+                _messageDelivered = messageDelivered;
+                console.log('message sent', messageSent);
+                console.log('message deliver', messageDelivered);
+                initChart();
+            });
+
+            socket.emit('report call', date);
+            socket.on('report call', function (callObj) {
+                var callFree = callObj.callFree;
+                var callOut = callObj.callOut;
+
+                console.log('call Free', callFree);
+                console.log('call Out', callOut);
+                _callFree = callFree;
+                _callOut = callOut;
+                initChart();
+            });
+
+            var initChart = function () {
+                $('#container').highcharts({
+                    title: {
+                        text: 'Report SDK chart'
+                    },
+                    xAxis: {
+                        categories: [date]
+                    },
+                    labels: {
+                        items: [{
+                            style: {
+                                left: '250px',
+                                top: '0px',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                            }
+                        }]
+                    },
+                    series: [{
+                        type: 'column',
+                        name: 'User Register',
+                        data: [_userRegister],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'User Active',
+                        data: [_userActive],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'Message Sent',
+                        data: [_messageSent],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'Message Delivered',
+                        data: [_messageDelivered],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'Call Free',
+                        data: [_callFree],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'Call Out',
+                        data: [_callOut],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }]
+                });
+            };
+        });
+
+    </script>
+</head>
+<body>
+
+<div id="container" style="min-width: 310px; min-height: 600px; margin: 0 auto"></div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "sdk-report",
+  "version": "1.0.0",
+  "description": "repot real-time sdk astack",
+  "main": "server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sdk"
+  ],
+  "author": "loint",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "mysql": "^2.11.1",
+    "node-datetime": "^1.0.0",
+    "socket.io": "^1.4.8"
+  }
+}
