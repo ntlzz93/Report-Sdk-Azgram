@@ -39,7 +39,7 @@ exports.reportCall = function (date, callback) {
 
 exports.reportActiveAzGram = function(date,callback){
     var model = new reportModel();
-    model.getUserActiveAzGram("2016-05-19",function(users){
+    model.getUserActiveAzGram(date,function(users){
        callback(users);
     });
 };
@@ -50,7 +50,7 @@ exports.reportMessageAzGram = function(date,callback){
     var datenow = temp.now();
 
     var model = new reportModel();
-    model.getMessageAzGram(144082233,function(messages){
+    model.getMessageAzGram(datenow,function(messages){
        callback(messages);
     });
 };
