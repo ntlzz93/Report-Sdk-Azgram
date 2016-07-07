@@ -32,92 +32,30 @@
         }
         ;
 
-//        function getTimeStand() {
-//            var date = new Date();
-//
-//            var hour = date.getHours();
-//            hour = (hour < 10 ? "0" : "") + hour;
-//
-//            var min = date.getMinutes();
-//            min = (min < 10 ? "0" : "") + min;
-//
-//            var sec = date.getSeconds();
-//            sec = (sec < 10 ? "0" : "") + sec;
-//
-//            var year = date.getFullYear();
-//
-//            var month = date.getMonth() + 1;
-//            month = (month < 10 ? "0" : "") + month;
-//
-//            var day = date.getDate();
-//            day = (day < 10 ? "0" : "") + day;
-//
-//            return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
-//        }
-//        ;
+        function getTimeStand() {
+            var date = new Date();
+
+            var hour = date.getHours();
+            hour = (hour < 10 ? "0" : "") + hour;
+
+            var min = date.getMinutes();
+            min = (min < 10 ? "0" : "") + min;
+
+            var sec = date.getSeconds();
+            sec = (sec < 10 ? "0" : "") + sec;
+
+            var year = date.getFullYear();
+
+            var month = date.getMonth() + 1;
+            month = (month < 10 ? "0" : "") + month;
+
+            var day = date.getDate();
+            day = (day < 10 ? "0" : "") + day;
+
+            return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+        }
+        ;
         /* End Helper Function */
-
-        /* Socket.io-client Function */
-
-        function reportSignUp(socket, date) {
-//            socket.emit('report signup', date);
-//            socket.on('users signup', function (data) {
-//                console.log('user register', data);
-//                _userRegister = data;
-//                initChart();
-//            });
-        }
-        ;
-
-        function reportActive(socket, lastVisitDate) {
-//            socket.emit('report active', lastVisitDate);
-//            socket.on('report active', function (users) {
-//                console.log('user active', users);
-//                _userActive = users;
-//                initChart();
-//            });
-        }
-        ;
-
-        function reportMessage(socket, date) {
-//            socket.emit('report message', date);
-//            socket.on('report message', function (messageObj) {
-//                if (messageObj.messageSent == null) {
-//                    var messageSent = 0;
-//                } else {
-//                    var messageSent = messageObj.messageSent;
-//                }
-//
-//                if (messageObj.messageDelivered == null) {
-//                    var messageDelivered = 0;
-//                } else {
-//                    var messageDelivered = messageObj.messageDelivered;
-//                }
-//                _messageSent = messageSent;
-//                _messageDelivered = messageDelivered;
-//                console.log('message sent', messageSent);
-//                console.log('message deliver', messageDelivered);
-//                initChart();
-//            });
-        }
-        ;
-
-        function reportCall(socket, date) {
-//            socket.emit('report call', date);
-//            socket.on('report call', function (callObj) {
-//                var callFree = callObj.callFree;
-//                var callOut = callObj.callOut;
-//
-//                console.log('call Free', callFree);
-//                console.log('call Out', callOut);
-//                _callFree = callFree;
-//                _callOut = callOut;
-//                initChart();
-//            });
-        }
-        ;
-
-        /* End Socket.io-client Function */
 
         $(function () {
 
@@ -130,32 +68,26 @@
             var _callOut;
 
             /////////////////////////
+            var _azActive;
+            var _azMessage;
+
             var socket = io();
 
             var date = getDateTime();
-
-//            reportSignUp(socket, date);
-
-//            var lastVisitDate = getTimeStand();
-
-//            reportActive(socket, lastVisitDate);
-//
-//            reportMessage(socket, date);
-//
-//            reportCall(socket, date);
+            var datetime = getTimeStand();
 
             socket.emit('report signup', date);
             socket.on('users signup', function (data) {
                 console.log('user register', data);
                 _userRegister = data;
-                initChart();
+                initChartSdk();
             });
 
             socket.emit('report active', date);
             socket.on('report active', function (users) {
                 console.log('user active', users);
                 _userActive = users;
-                initChart();
+                initChartSdk();
             });
 
             socket.emit('report message', date);
@@ -175,7 +107,7 @@
                 _messageDelivered = messageDelivered;
                 console.log('message sent', messageSent);
                 console.log('message deliver', messageDelivered);
-                initChart();
+                initChartSdk();
             });
 
             socket.emit('report call', date);
@@ -187,11 +119,25 @@
                 console.log('call Out', callOut);
                 _callFree = callFree;
                 _callOut = callOut;
-                initChart();
+                initChartSdk();
             });
 
-            var initChart = function () {
-                $('#container').highcharts({
+            socket.emit('report active_az', date);
+            socket.on('report active_az', function (users) {
+                console.log('active azgram', users);
+                _azActive = users;
+                initChartAzGram();
+            });
+
+            socket.emit('report message_az', datetime);
+            socket.on('report message_az', function (message) {
+                console.log('message azgram', message);
+                _azMessage = message;
+                initChartAzGram();
+            });
+
+            var initChartSdk = function () {
+                $('#sdk-chart').highcharts({
                     title: {
                         text: 'Report SDK chart'
                     },
@@ -264,13 +210,56 @@
                     }]
                 });
             };
+
+            var initChartAzGram = function () {
+                $('#azgram-chart').highcharts({
+                    title: {
+                        text: 'Report AZGRAM chart'
+                    },
+                    xAxis: {
+                        categories: [date]
+                    },
+                    labels: {
+                        items: [{
+                            style: {
+                                left: '550px',
+                                top: '0px',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                            }
+                        }]
+                    },
+                    series: [{
+                        type: 'column',
+                        name: 'User Active Daily',
+                        data: [_azActive],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }, {
+                        type: 'column',
+                        name: 'Message',
+                        data: [_azMessage],
+                        dataLabels: {
+                            enabled: true,
+                            format: "{y}",
+                            distance: -30
+                        }
+                    }]
+                });
+            };
+
         });
 
     </script>
 </head>
 <body>
 
-<div id="container" style="min-width: 310px; min-height: 600px; margin: 0 auto"></div>
+<div id="container">
+    <div id="sdk-chart" style="min-width: 310px; min-height: 300px; margin: 0 auto"></div>
+    <div id="azgram-chart" style="min-width: 310px; min-height: 300px; margin: 0 auto"></div>
+</div>
 
 </body>
 </html>

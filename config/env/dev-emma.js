@@ -5,17 +5,17 @@ var mysql = require('mysql');
 
 module.exports = function () {
 
-    var con = mysql.createPool({
+    var conf = mysql.createPool({
         connectionLimit: 100,
-        host: "",
-        user: "",
+        host: "173.194.243.33",
+        user: "azstack",
         port: 3306,
-        password: '',
-        database: "",
+        password: 'duyhaucom22',
+        database: "EMMA_old",
         debug : false
     });
 
-    con.getConnection(function (err) {
+    conf.getConnection(function (err) {
         if (err) {
             console.log("Error connecting to Db");
             return;
@@ -24,5 +24,5 @@ module.exports = function () {
     });
 
 
-    return con;
+    return conf;
 };

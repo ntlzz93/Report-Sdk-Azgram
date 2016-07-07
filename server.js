@@ -83,6 +83,28 @@ io.on('connection', function (socket) {
         f();
     });
 
+    socket.on('report active_az',function(date){
+        var f = function () {
+            reportController.reportActiveAzGram(date, function (users) {
+                io.emit('report active_az', users);
+            });
+        };
+
+        setInterval(f, 60000);
+        f();
+    });
+
+    socket.on('report message_az',function(datetime){
+        var f = function () {
+            reportController.reportMessageAzGram(datetime, function (message) {
+                io.emit('report message_az', message);
+            });
+        };
+
+        setInterval(f, 60000);
+        f();
+    });
+
 });
 
 http.listen(8000, function () {
