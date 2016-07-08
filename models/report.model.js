@@ -117,7 +117,8 @@ ReportModel.prototype.getUserActiveAzGram = function (date, callback) {
  * */
 
 ReportModel.prototype.getMessageAzGram = function (date, callback) {
-    var sql = "SELECT count(msg) as message FROM dh_chat WHERE created like '%" + date + "%'";
+
+    var sql = "SELECT count(msg) as message FROM dh_chat WHERE created like " + date;
 
     db_az.query(sql, function (err, rows) {
         if (err) throw  err;

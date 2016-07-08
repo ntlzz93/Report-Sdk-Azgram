@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <style>
+        .number {
+            text-align: center;
+            color: black;
+            font-size: 80px;
+
+        }
+
+        .title {
+
+            text-align: center;
+            color: black;
+            font-size: x-large;
+        }
+
+        .group-text {
+
+        }
+
+        .number-div {
+            text-align: center;
+            height: 200px;
+            vertical-align: middle;
+            padding: calc(100% / 2 - 45px) 0;
+        }
+
+        .title-div {
+
+            text-align: center;
+            height: 100px;
+            vertical-align: middle;
+            padding: calc(100% / 2 - 90px) 0;
+        }
+
+        .row-1 {
+            margin-bottom: 5px;
+        }
+
+        .color-1 {
+            background: #abef98;
+        }
+
+        .color-2 {
+            background: #a7dbd8;
+        }
+
+        .color-3 {
+            background: #cccccc;
+        }
+
+        .color-4 {
+            background: #a7dbd8;
+        }
+
+        .color-5 {
+            background: #fc8c84;
+        }
+
+        .color-6 {
+            background: #006666;
+        }
+
+        .color-7 {
+            background: #abef98;
+        }
+
+        .color-8 {
+            background: #444400;
+        }
+
+        .datetime {
+
+            margin-bottom: 0px;
+            font-size: 30px;
+            text-align: center;
+        }
+    </style>
+
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+
+
+</head>
+<body>
+
+<div id="container" class="container">
+    <div class="datetime">
+        <label id="date"></label>
+    </div>
+    <div class="row row-1">
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-1">
+                <label type="hidden" class="number" id="number_user_register_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_user_register_sdk">SDK User Register</label>
+            </div>
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-2">
+                <label type="hidden" class="number" id="number_user_active_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_user_active_sdk">SDK User Active</label>
+            </div>
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-3">
+                <label type="hidden" class="number" id="number_message_sent_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_message_sent_sdk">SDK Message Sent</label>
+            </div>
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-4">
+                <label type="hidden" class="number" id="number_message_delivered_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="number_message_delivered_sdk">SDK Message Delivered</label>
+            </div>
+        </div>
+    </div>
+    <div class="row 2">
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-5">
+                <label type="hidden" class="number" id="number_call_free_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_call_free_sdk">SDK Call Free</label>
+            </div>
+
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-6">
+                <label type="hidden" class="number" id="number_call_out_sdk"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_call_out_sdk">SDK Call Out</label>
+            </div>
+
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-7">
+                <label type="hidden" class="number" id="number_user_active_azgram"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_user_active_azgram">AZGRAM User Active</label>
+            </div>
+        </div>
+        <div class="col-md-3 group-text">
+            <div class="row number-div color-8">
+                <label type="hidden" class="number" id="number_user_message_azgram"></label>
+            </div>
+            <div class="row title-div">
+                <label type="hidden" class="title" id="title_user_message_azgram">AZGRAM Message</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    /* Helper Function */
+    function getDateTime() {
+        var date = new Date();
+
+        var year = date.getFullYear();
+
+        var month = date.getMonth() + 1;
+        month = (month < 10 ? "0" : "") + month;
+
+        var day = date.getDate();
+        day = (day < 10 ? "0" : "") + day;
+
+        return year + "-" + month + "-" + day;
+    }
+    ;
+
+    function getTimeStand() {
+        var date = new Date();
+
+        var hour = date.getHours();
+        hour = (hour < 10 ? "0" : "") + hour;
+
+        var min = date.getMinutes();
+        min = (min < 10 ? "0" : "") + min;
+
+        var sec = date.getSeconds();
+        sec = (sec < 10 ? "0" : "") + sec;
+
+        var year = date.getFullYear();
+
+        var month = date.getMonth() + 1;
+        month = (month < 10 ? "0" : "") + month;
+
+        var day = date.getDate();
+        day = (day < 10 ? "0" : "") + day;
+
+        return day + "-" + month + "-" + year + "       " + hour + ":" + min + ":" + sec;
+    }
+    ;
+    /* End Helper Function */
+
+    $(function () {
+
+        //////////////////////////
+        var _userRegister;
+        var _userActive;
+        var _messageSent;
+        var _messageDelivered;
+        var _callFree;
+        var _callOut;
+
+        /////////////////////////
+        var _azActive;
+        var _azMessage;
+
+        var socket = io();
+
+        var date = getDateTime();
+        var dateM = new Date();
+
+        var datenow = dateM.getTime()/1000;
+
+        var s = datenow.toString().slice(0,10);
+
+        datenow = parseInt(s);
+
+        var d = function () {
+            var datetime = getTimeStand();
+            $('#date').html(datetime);
+        };
+        setInterval(d, 1000);
+
+
+        socket.emit('report signup', date);
+        socket.on('users signup', function (data) {
+            console.log('user register', data);
+            _userRegister = data;
+            $("#number_user_register_sdk").html(_userRegister);
+        });
+
+        socket.emit('report active', date);
+        socket.on('report active', function (users) {
+            console.log('user active', users);
+            _userActive = users;
+            $("#number_user_active_sdk").html(_userActive);
+        });
+
+        socket.emit('report message', date);
+        socket.on('report message', function (messageObj) {
+            if (messageObj.messageSent == null) {
+                var messageSent = 0;
+            } else {
+                var messageSent = messageObj.messageSent;
+            }
+
+            if (messageObj.messageDelivered == null) {
+                var messageDelivered = 0;
+            } else {
+                var messageDelivered = messageObj.messageDelivered;
+            }
+            _messageSent = messageSent;
+            _messageDelivered = messageDelivered;
+            console.log('message sent', messageSent);
+            console.log('message deliver', messageDelivered);
+
+            $("#number_message_sent_sdk").html(_messageSent);
+            $("#number_message_delivered_sdk").html(_messageDelivered);
+        });
+
+        socket.emit('report call', date);
+        socket.on('report call', function (callObj) {
+            var callFree = callObj.callFree;
+            var callOut = callObj.callOut;
+
+            console.log('call Free', callFree);
+            console.log('call Out', callOut);
+            _callFree = callFree;
+            _callOut = callOut;
+
+            $("#number_call_free_sdk").html(_callFree);
+            $("#number_call_out_sdk").html(_callOut);
+        });
+
+        socket.emit('report active_az', date);
+        socket.on('report active_az', function (users) {
+            console.log('active azgram', users);
+            _azActive = users;
+            $("#number_user_active_azgram").html(_azActive);
+        });
+
+        socket.emit('report message_az', datenow);
+        socket.on('report message_az', function (message) {
+            console.log('message azgram', message);
+            _azMessage = message;
+            $("#number_user_message_azgram").html(_azMessage);
+        });
+    });
+
+</script>
+</body>
+</html>

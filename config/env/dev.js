@@ -7,10 +7,10 @@ module.exports = function () {
 
     var con = mysql.createPool({
         connectionLimit: 100,
-        host: "173.194.243.33",
-        user: "azstack",
+        host: "127.0.0.1",
+        user: "root",
         port: 3306,
-        password: 'duyhaucom22',
+        password: '',
         database: "azstack_sdk_test",
         debug : false
     });

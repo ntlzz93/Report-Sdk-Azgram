@@ -31,6 +31,12 @@ exports.reportMessage = function (date, callback) {
 exports.reportCall = function (date, callback) {
     var model = new reportModel();
     model.getUserCall(date, function (callFree, callOut) {
+        if(callFree == null){
+            callFree = 0;
+        }
+        if(callOut == null){
+            callOut = 0;
+        }
         callback(callFree, callOut);
     });
 };
@@ -45,17 +51,14 @@ exports.reportActiveAzGram = function(date,callback){
 };
 
 exports.reportMessageAzGram = function(date,callback){
-
-    var temp = dateTime.create(date);
-    var datenow = temp.now();
-
+ 
     var model = new reportModel();
-    model.getMessageAzGram(datenow,function(messages){
+    model.getMessageAzGram(date,function(messages){
        callback(messages);
     });
 };
 
 exports.index = function (req, res) {
 
-    res.render('index', {title: 'Report'});
+    res.render('index-fix', {title: 'Report'});
 };
