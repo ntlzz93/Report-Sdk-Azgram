@@ -26,7 +26,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
@@ -41,7 +41,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
@@ -60,7 +60,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
@@ -79,7 +79,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
@@ -90,7 +90,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
@@ -101,7 +101,7 @@ io.on('connection', function (socket) {
             });
         };
 
-        setInterval(f, 1000);
+        setInterval(f, 30000);
         f();
     });
 
